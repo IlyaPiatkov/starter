@@ -99,6 +99,12 @@ lazyRequireTask('clean', './tasks/clean', {
   src: path.clean
 });
 
+lazyRequireTask('webpack', './tasks/webpack', {
+  src: path.src.js,
+  dest: path.dest.js,
+  isDevelopment: isDevelopment
+});
+
 gulp.task('watch', () => {
   gulp.watch(path.watch.html, gulp.series('html'));
   gulp.watch(path.watch.css, gulp.series('css'));
@@ -107,10 +113,10 @@ gulp.task('watch', () => {
   gulp.watch(path.watch.fonts, gulp.series('font'));
 });
 
-// gulp.task('build', gulp.parallel('html', 'lint:pug', 'css', 'img', 'sprite', 'font'));
-gulp.task('build', gulp.parallel('html', 'lint:pug', 'css', 'img', 'font', 'lint:js'));
+// gulp.task('build', gulp.parallel('html', 'lint:pug', 'css', 'img', 'sprite', 'font', 'lint:js'));
+gulp.task('build', gulp.parallel('html', 'lint:pug', 'css', 'img', 'font', 'webpack'));
 
-gulp.task('production', gulp.series('clean', 'html', 'css', 'img', 'font'));
+gulp.task('production', gulp.series('clean', 'html', 'css', 'img', 'font', 'webpack'));
 
 gulp.task('dev', gulp.series('build', gulp.parallel('server', 'watch')));
 
